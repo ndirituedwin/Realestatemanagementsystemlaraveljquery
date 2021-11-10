@@ -31,8 +31,10 @@
                 <div class="container">
                     <div class="hero-inner">
 						<div class="hero-copy">
-	                        <h1 class="hero-title mt-0">Real Estate Landing page</h1>
-	                        <p class="hero-paragraph">Real estate is the land along with any permanent improvements attached to the land, whether natural or man-made—including water, trees, minerals, buildings, homes, fences, and bridges. Real estate is a form of real property</p>
+	                        <h4 class="hero-title mt-0">PROPWINGS LITE <br>
+                                REAL ESTATE MANAGEMENT SYSTEM <br>
+                                (Powered by Colorchase Ltd)</h4>
+	                        <p class="hero-paragraph">Effective and efficient tool to manage your data in Real Estate sales, rent and service management plus much more. <br> Giving your Property wings to soar high</p>
 	                        <div class="hero-cta">
 								<a class="button button-primary" href="{{ route('login') }}">Login Now</a>
 								<div class="lights-toggle">
@@ -59,7 +61,7 @@
                 </div>
             </section>
 
-           
+
         </main>
 
         <footer class="site-footer has-top-divider">

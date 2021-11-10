@@ -1,0 +1,39 @@
+USE [Propwings_Pause]
+GO
+/****** Object:  StoredProcedure [dbo].[Pro_List_All_Tenants]    Script Date: 10/09/2021 13:09:37 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+alter proc [dbo].[Pro_List_Active_Tenants_byProperty]
+(@property varchar(150))
+as
+begin
+select t_code as Code, t_code+' - '+' ['+unit+']'+' - 
+'+isnull(t_name,'')  as details from tenants where Property=@property and active=1
+order by dbo.pro_sort_varchar(t_code)
+end
+
+/**end of [dbo].[Pro_List_All_Tenants] **/
+
+
+
+
+
+/**start of [dbo].[Pro_View_ProTransactions_Property] **/
+create proc [dbo].[Pro_View_ProTransactions_Property]
+(
+@Month int, @Year int,@Property varchar(50),@Payable varchar(50)
+)
+as
+begin
+
+SELECT [unit_id] AS Unit, dbo.Pro_GetTenantNames([t_code]) as Tenant,dbo.GetPayableName([Payable]) as Payable
+, Credit as AmountPaid, [ReceiptNo] as ReceiptNo ,refnbr as RefNo, convert(varchar,[trandate],105)+' '+convert(varchar,[trandate],108) as [Payment Date]
+,dbo.Pro_GetPayMentMode([paymenttype]) as [paymenttype]
+  FROM [PropTransactions] where 
+  property_id=@Property and (Payable=@Payable or @Payable='All') and Month=@Month and Year=@Year
+  and ReceiptNo like 'RC%' and Credit<>0  order by dbo.pro_sort_varchar(ReceiptNo)
+
+  end
+/**end of [dbo].[Pro_View_ProTransactions_Property]**/

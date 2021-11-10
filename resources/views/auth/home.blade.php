@@ -1,12 +1,12 @@
 @extends('partials.defaultl')
 @section('content')
 <div class="" style="margin-top: 10px">
-  <a href="{{ route('tenant.balances') }}" class="btn btn-success pull-left">Go to Tenants page</a>
-  <form method="POST" action="{{ route('logout') }}">
+  {{-- <a href="tenantbalances" class="btn btn-success pull-left">Go to Tenants page</a> --}}
+  {{-- <form method="POST" action="{{ route('logout') }}">
   @csrf
     <button type="submit" class="btn btn-success pull-right">Logout</button>
 
-  </form>
+  </form> --}}
 
 </div>
 <div class="row" style="margin-top: 50px;" >
@@ -28,11 +28,9 @@
     <option value="All;All">select category</option>
     @if (!empty($categories))
        @foreach ($categories as $category)
-       <option  value="{{$category->recid}};{{$category->Code}}" >{{$category->Description}}</option>     
-           
-       @endforeach        
+       <option  value="{{$category->recid}};{{$category->Code}}" >{{$category->Description}}</option>
+       @endforeach
     @endif
-   
    </select>
   </div>
 
@@ -40,10 +38,10 @@
     <label for="properties" style="color: white " class="text-center">Select status</label>
    <select name="selectstatus" id="selectstatus" class="form-control">
 
-       <option  value="All">Select Status</option>     
-       <option  value="Occupied">Occupied</option>     
-       <option  value="Vacant">Vacant</option>                
-   
+       <option  value="All">Select Status</option>
+       <option  value="Occupied">Occupied</option>
+       <option  value="Vacant" selected>Vacant</option>
+
    </select>
   </div>
 
@@ -64,5 +62,5 @@
 
 
 
-      
+
 @endsection

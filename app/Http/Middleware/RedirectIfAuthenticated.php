@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $guards = empty($guards) ? [null] : $guards;
+      /*  $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
@@ -29,6 +29,13 @@ class RedirectIfAuthenticated
             }
         }
 
-        return $next($request);
+        return $next($request);*/
+      /*  if (session()->has('data')) {
+            return redirect()->route('home.beforerecords');
+    
+        }else{
+             return redirect()->route('login'); 
+       
+        }*/
     }
 }

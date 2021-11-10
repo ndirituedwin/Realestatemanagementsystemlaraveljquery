@@ -15,12 +15,14 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-           return route('login');
-           //return redirect()->route('home.beforerecords');
+        if (!session()->has('data')) {
 
-          //  return route('login');
-            //return redirect('/');
+            /* if (! $request->expectsJson()) {
+          // return route('login');
+           //return redirect()->route('home.beforerecords');*/
+
+            return route('login');
+            //return redirect('/');*/
         }
     }
 }

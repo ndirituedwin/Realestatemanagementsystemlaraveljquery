@@ -3,45 +3,93 @@
    padding: 0px;
 }
 body{
-  background:url(real.png);
+   background-color: rgb(2, 2, 2);
+   /** background:url(real.png);**/
    background-size: cover;
    background-attachment: fixed;
    font-family: 'Times New Roman', Times, serif;
 }
 h1{
-   font-size: 20px;
+   font-size: 15px;
    color:green;
+   font-family: Arial;
 }
 p{
-   font-size: 25px;
-
-   color: blue;
+   font-size: 15px;
+   font-family: Arial;
+   color: rgb(5, 5, 5);
 }
 .col-md-9{
-   margin-top: 80px;
-   box-shadow: -5px -5px 5px  blue;
+   margin-top: 70px;
+   box-shadow: -5px -5px 5px  rgb(3, 3, 3);
    border-radius: 5px;
 }
 label{
-   font-size: 23px;
-   color:rgb(218, 16, 134);
+   color:rgb(65, 64, 64);
+   margin-left: 60px;
+   font-family: Arial;
+   font-size: 15px;
+
+
 }
 .form-control{
    background: transparent;
    border-radius: 0;
    border: 0px;
    border-bottom: 1px solid white;
-   font-size: 18px;
-   margin-top: 15px;
+   font-size: 15px;
+   margin-top: 5px;
+   font-family: Arial;
+
 }
 input{
    border-radius: 5px;
+   font-family: Arial;
+   font-size: 15px;
+
+
 }
 .btn-success{
  margin-left: -100px;
+ font-family: Arial;
+
 }
 .login:hover{
-   background: royalblue;
-   color: rgba(233, 31, 31, 0.842);
+   background: rgb(42, 73, 12);
+   color: white;
+   font-family: Arial;
+
    box-shadow: -1px 1px 60px  10px rgb(194, 176, 176);
 }
+#span{
+   margin-left: 30px;
+}
+#selecttype{
+    border: 1px solid rgb(94, 92, 92);
+    width: 300px;
+    margin-left: 30px;
+    /* margin-right: 10px;  */
+    border-radius: 10px;
+    font-family: Arial;
+    font-size:15px;
+
+}
+.propwingslogo{
+    background: url(matatu.jpg);
+    width: auto;
+    height: auto;
+}
+.loginpagee{
+    /* margin:50px auto; */
+    /* opacity:.7; */
+    /* background-color: #000000; */
+    padding:10px;
+    /* width:85%; */
+    margin-left:auto;
+    margin-right:auto;
+    max-width:  400px;
+    height:auto;
+   background-color: white;
+   
+}
+

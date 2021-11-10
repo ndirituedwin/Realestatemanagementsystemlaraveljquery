@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Real estate</title>
+  <title>Propwings-{{ Session::get('companynanmee') }}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -38,16 +38,17 @@
 <body>
 
   <!-- ======= Top Bar ======= -->
-  
+
 
   <!-- ======= Header ======= -->
-  
+
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
     <div class="container position-relative" data-aos="fade-up" data-aos-delay="500">
-      <h1>Welcome to Day</h1>
-      <h2>Real estate renting is what we do</h2>
+
+      <h1>Welcome today <?= Date('D,d M Y ')?> <i id="clock"></i></h1>
+      <h2>Propwings-{{ $companyname }}</h2>
       <a href="{{ route('homepage') }}" class="btn-get-started scrollto">Go to homepage</a>
     </div>
   </section><!-- End Hero -->
@@ -57,29 +58,26 @@
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
       <div class="container">
-
-        
-
       </div>
     </section><!-- End About Section -->
 
- 
+
     <!-- ======= Clients Section ======= -->
-   
+
     <!-- ======= Portfolio Section ======= -->
-    
+
     <!-- ======= Pricing Section ======= -->
-  
+
     <!-- ======= Team Section ======= -->
-    
+
     <!-- ======= Contact Section ======= -->
-   
+
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   >
 
- 
+
 
   <!-- Vendor JS Files -->
   <script src="{{asset('b4homepage/assets/vendor/jquery/jquery.min.js')}}"></script>
@@ -93,7 +91,37 @@
 
   <!-- Template Main JS File -->
   <script src="{{asset('b4homepage/assets/js/main.js')}}"></script>
+<script>
+      setInterval(showTime, 1000);
+    function showTime() {
+      let time = new Date();
+      let hour = time.getHours();
+      let min = time.getMinutes();
+      let sec = time.getSeconds();
+      am_pm = "AM";
 
+      if (hour > 12) {
+        hour -= 12;
+        am_pm = "PM";
+      }
+      if (hour == 0) {
+        hr = 12;
+        am_pm = "AM";
+      }
+
+      hour = hour < 10 ? "0" + hour : hour;
+      min = min < 10 ? "0" + min : min;
+      sec = sec < 10 ? "0" + sec : sec;
+
+      let currentTime = hour + ":"
+          + min + ":" + sec + am_pm;
+
+      document.getElementById("clock")
+          .innerHTML = currentTime;
+      // jQuery("#clock").innerHtml().val(currentTime);
+    }
+    showTime();
+</script>
 </body>
 
 </html>

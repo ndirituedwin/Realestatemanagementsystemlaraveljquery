@@ -1,9 +1,7 @@
 @extends('partials.defaultl')
 @section('content')
-<div class="" style="margin-top: 20px">
-  <a href="{{ route('homepage') }}" class="btn btn-warning">Go back</a>
-</div>
-<div class="row" style="margin-top: 50px;" >
+
+<div class="row" style="margin-top: 70px;" >
  <div class="container">
   <div class="col-md-4">
     <label for="properties" style="color: white " class="text-center">Select property</label>
@@ -22,7 +20,7 @@
     @if (!empty($fieldofficers))
      <option value="All;All">Select fieldofficer</option>
      @foreach ($fieldofficers as $fieldofficer)
-        <option value="{{$fieldofficer->ID}};{{$fieldofficer->EmployeeNo}}">{{$fieldofficer->name}} </option><br>
+        <option value="{{$fieldofficer->employeeno}};{{$fieldofficer->employeeno}}">{{$fieldofficer->Names}} </option><br>
      @endforeach
 @endif
    </select>
@@ -34,7 +32,7 @@
     @if (!empty($payables))
      <option value="All;All">Select payable</option>
      @foreach ($payables as $payable)
-        <option value="{{$payable->recid}};{{$payable->Code}}">{{$payable->Descr}} </option><br>
+        <option value="{{$payable->Code}};{{$payable->Code}}">{{$payable->details}} </option><br>
      @endforeach
 @endif
    </select>
@@ -42,7 +40,7 @@
   <div class="col-md-4">
    <label for="payables" style="color: white " class="text-center">Select month</label>
   <select name="monthselect" id="monthselect" class="form-control">
-             <?php 
+             <?php
              $months = array(1=>'January',2=>'February',3=>'March',4=>'April',5=>'May',6=>'June',7=>'July ',8=>'August',9=>'September',10=>'October',11=>'November',12=>'December');
              $mont=date("M");
              $ldate=Date::now()->format('l j F Y H:i:s');
@@ -61,7 +59,7 @@
  <div class="col-md-4">
    <label for="payables" style="color: white " class="text-center">Select year</label>
   <select name="yearselect" id="yearselect" class="form-control">
-<?php 
+<?php
         $year=date("Y");
    ?>
    @for ($i =5; $i>=0; $i-=1)
@@ -71,7 +69,7 @@
    @endfor
   </select>
  </div>
- 
+
  </div>
 </div>
 <div class="row" style="margin-top: 50px" id="appendtenantbalances">
@@ -89,5 +87,5 @@
 
 
 
-      
+
 @endsection

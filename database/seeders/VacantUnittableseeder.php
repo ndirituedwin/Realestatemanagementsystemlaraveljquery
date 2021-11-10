@@ -43,6 +43,7 @@ class VacantUnittableseeder extends Seeder
             'category'=> 'category four',
             'location'=>'kiambu ',
             'rent_amount'=>70000,
+
         ],
         [
          'property_id'=>5,
@@ -86,7 +87,7 @@ class VacantUnittableseeder extends Seeder
         'location'=>'embakasi ',
         'rent_amount'=>40000,
     ],
-        
+
 
         ];
         foreach($vacantseeder as $seeder){

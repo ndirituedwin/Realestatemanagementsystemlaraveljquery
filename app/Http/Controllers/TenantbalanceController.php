@@ -4,43 +4,48 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use DateTimeZone;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\Tenantbalance;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+
 use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Date;
-
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TenantbalanceController extends Controller
 {
-    public function tenantbalances(){ 
+    public function tenantbalances(Request $request){
+        try {
+      $dbname=session("dbname");
+    Client::configure($dbname);
       $mytime = Carbon::now();
-  // echo $mytime->toDateTimeString();
- /*$ldate = Date::now()->format('l j F Y H:i:s');
-  $ldate=explode(" ",$ldate);
-  $montho=$ldate[2];
-  dd($montho);*/
    $properties=DB::select("EXEC Pro_AllActiveProperties");
-   $fieldofficers=DB::select("EXEC selectallfieldofficers ?,?,?",['null','All','null']);
+   $fieldofficers=DB::select("EXEC Pro_FieldOfficers ");
       $date=(Carbon::now());
         $explode=explode("-",$date);
          $fetchyear=$explode[0];
          $fechmonth=$explode[1];
          $fetchday=$explode[2];
-      $payables=DB::select("EXEC selectallfieldofficers ?,?,?",['null','null','All']);
-      $tenantbalnces=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
-   //   dd($tenantbalnces);
-      return view('tenantbalance.tenantbalances')
+      $payables=DB::select("EXEC [Pro_LoadPayables]");
+         $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
+
+   return view('tenantbalance.tenantbalances')
         ->withfieldofficers($fieldofficers)
         ->withproperties($properties)
         ->withpayables($payables)
-     ->withtenantbalances($tenantbalnces);
-        //->withvacantunits($vacantunits);
+     ->withtenantbalances($queryResults);
+    } catch (\Throwable $th) {
+        return back()->withdanger("failed to execute");
+     }
     }
     public function gettenantbalances(Request $request){
+      $dbname=session("dbname");
+    Client::configure($dbname);
         if($request->ajax()){
             $property=explode(";",$request['property_id']);
             $propertyID=$property[1];
@@ -65,22 +70,26 @@ class TenantbalanceController extends Controller
         if ($propertyID=='All' || $fieldofficerID=='All' || $payableID=='All') {
         }if($propertyID=='All' && $year==$fetchyear && $month==$fechmonth && $fieldofficerID=='All' && $payableID=='All'){
 
-          $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
+          $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
+
+
         }else{
-        $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payableID]);
+        $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payableID]);
        //  echo"<pre>";print_r($tenantbalances);die;
 
         }
-          
+
 
                return view('tenantbalance.appendtenantbalances')
-             ->withtenantbalances($tenantbalances);
+             ->withtenantbalances($queryResults);
 
         }
     }
     public function gettenatbalancesbyfieldofficer(Request $request){
+      $dbname=session("dbname");
+    Client::configure($dbname);
       if($request->ajax()){
-   //echo"<pre>";print_r($request->all());die;    
+   //echo"<pre>";print_r($request->all());die;
         $property=explode(";",$request['property_id']);
         $propertyID=$property[1];
         $payable=explode(";",$request['payableselect']);
@@ -99,20 +108,25 @@ class TenantbalanceController extends Controller
     if ($fieldofficer=='All'|| $propertyID=='All' || $payableID=='All') {
 // echo"<pre>";print_r("All");die;
     } if($fieldofficer=='All'  && $month==$fechmonth && $year==$fetchyear  && $propertyID=='All' && $payableID=='All'){
-      $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
+      $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
       //echo"<pre>";print_r($tenantbalances);die;
 
+
     }else{
-        $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficer,$month,$year,$payableID]);
+        $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficer,$month,$year,$payableID]);
         //echo"<pre>";print_r($tenantbalances);die;
+
 
       }
            return view('tenantbalance.appendtenantbalances')
-         ->withtenantbalances($tenantbalances);
+         ->withtenantbalances($queryResults);
 
     }
     }
     public function gettenatbalancesbypayables(Request $request){
+
+      $dbname=session("dbname");
+    Client::configure($dbname);
       if($request->ajax()){
         $property=explode(";",$request['property_id']);
         $propertyID=$property[1];
@@ -122,11 +136,11 @@ class TenantbalanceController extends Controller
 
        $payable=explode(";",$request['payable']);
         $payable=$payable[1];
-      //  echo"<pre>";print_r($request->all());die;
+       // echo"<pre>";print_r($dbname);die;
        $year=$request['year'];
        $month=explode(";",$request['month']);
         $month=$month[0];
-       
+
    // echo"<pre>";print_r($request->all());die;
          $date=(Carbon::now());
         $explode=explode("-",$date);
@@ -136,20 +150,25 @@ class TenantbalanceController extends Controller
     if ($propertyID =='All' || $fieldofficerID =='All' || $payable=='All') {
         //echo"<pre>";print_r("All");die;
     } if($propertyID =='All' && $fieldofficerID =='All' && $payable=='All' && $month==$fechmonth && $year==$fetchyear){
-       $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?", ['All','All','All',$fechmonth,$fetchyear,'All']);
+       $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?", ['All','All','All',$fechmonth,$fetchyear,'All']);
         //echo"<pre>";print_r($tenantbalances);die;
-        }else{
+
+
+    }else{
        //   echo"<pre>";print_r($request->all());die;
-        $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payable]);
+        $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payable]);
         //echo"<pre>";print_r($tenantbalances);die;
+
 
       }
            return view('tenantbalance.appendtenantbalances')
-         ->withtenantbalances($tenantbalances);
+         ->withtenantbalances($queryResults);
 
     }
     }
     public function gettenatbalancesbymonth(Request $request){
+      $dbname=session("dbname");
+    Client::configure($dbname);
       if($request->ajax()){
 // echo"<pre>";print_r($request->all());die;
 
@@ -163,7 +182,7 @@ class TenantbalanceController extends Controller
         $payable=$data[1];
         $month=explode(";",$request['month']);
         $month=$month[0];
-    //    echo"<pre>";print_r($month);die; 
+    //    echo"<pre>";print_r($month);die;
 
         $date=(Carbon::now());
         $explode=explode("-",$date);
@@ -172,20 +191,22 @@ class TenantbalanceController extends Controller
          $fechmonth=ltrim($fechmonth,0);
          if ($propertyID =='All' || $fieldofficerID =='All' || $payable=='All') {
         } if($propertyID =='All' && $fieldofficerID =='All' && $payable=='All' && $month==$fechmonth && $year==$fetchyear){
-      $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
+      $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
       //echo"<pre>";print_r($tenantbalances);die;
 
     }else{
-        $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payable]);
+        $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payable]);
         //echo"<pre>";print_r($tenantbalances);die;
 
       }
            return view('tenantbalance.appendtenantbalances')
-         ->withtenantbalances($tenantbalances);
+         ->withtenantbalances($queryResults);
 
     }
     }
     public function gettenatbalancesbyyear(Request $request){
+      $dbname=session("dbname");
+    Client::configure($dbname);
       if($request->ajax()){
   //echo"<pre>";print_r($request->all());die;
 
@@ -198,7 +219,7 @@ class TenantbalanceController extends Controller
        $payable=$data[1];
        $month=explode(";",$request['month']);
        $month=$month[0];
-      // echo"<pre>";print_r($month);die; 
+      // echo"<pre>";print_r($month);die;
 
        $year=$request['year'];
          $date=(Carbon::now());
@@ -207,26 +228,27 @@ class TenantbalanceController extends Controller
          $fechmonth=$explode[1];
          $fechmonth=$explode[1];
          $fechmonth=ltrim($fechmonth,0);
-         if ($propertyID =='All' || $fieldofficerID =='All' || $payable=='All') {  
+         if ($propertyID =='All' || $fieldofficerID =='All' || $payable=='All') {
         }if($propertyID =='All' && $fieldofficerID =='All' && $payable=='All' && $month==$fechmonth && $year==$fetchyear){
-      $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
+      $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All','All','All',$fechmonth,$fetchyear,'All']);
       //echo"<pre>";print_r($tenantbalances);die;
 
+
     }else{
-        $tenantbalances=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payable]);
+        $queryResults=DB::select("EXEC Pro_Uncleared_Units_Report ?,?,?,?,?,?",['All',$propertyID,$fieldofficerID,$month,$year,$payable]);
 
       }
            return view('tenantbalance.appendtenantbalances')
-         ->withtenantbalances($tenantbalances);
+         ->withtenantbalances($queryResults);
 
-    } 
+    }
     }
     public function getsingletenantbalance($tcode){
-        // $data = Crypt::decrypt($tcode);
-    // dd("f");
+      $dbname=session("dbname");
+    Client::configure($dbname);
+
     try {
       $explodeurlvalues=explode("&&&", $tcode);
-       
       $tenanttcode=Crypt::decrypt($explodeurlvalues[0]);
       $tenantname=Crypt::decrypt($explodeurlvalues[1]);
       $tenanttel=Crypt::decrypt($explodeurlvalues[2]);
@@ -239,7 +261,7 @@ class TenantbalanceController extends Controller
       $fetchyear=$explode[0];
       $fechmonth=$explode[1];
       $fetchday=$explode[2];
-      
+
       $singletenant=DB::select("EXEC Pro_TenantBills_Load ?", [$tenanttcode]);
       return view('tenantbalance.singletenant')
            ->withtenantname($tenantname)
@@ -250,10 +272,11 @@ class TenantbalanceController extends Controller
            ->withtenantyear($tenantyear)
            ->withsingletenant($singletenant);
     } catch (\Exception $th) {
-     abort(404);
+     abort(403);
+    //  return view('errors.404');
     }
-           
-        
+
+
     }
 
 }

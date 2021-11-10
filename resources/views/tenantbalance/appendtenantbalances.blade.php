@@ -3,18 +3,18 @@
 use App\Models\Tenantbalance;
 ?>
 <div class="row">
-    
+
     <div class="panel panel-default">
         <center>
-            <input type="text" id="searchtenant" name="searchh" placeholder="Search by phone or field officer" style="width: 40%;margin-top: 7px;margin-bottom: 7px" class="form-control">
+            <input type="text" id="searchtenant" name="searchh" placeholder="Search by tenant name" style="width: 40%;margin-top: 7px;margin-bottom: 7px" class="form-control">
            </center>
 
         <div class="panel-heading" style="background-color: rgb(174, 177, 174)"><h4 class="text-center">Tenant balances</h4>
 
             <div class="panel-body" style="background-color: white;overflow-x: scroll">
              <div class="col-md-12">
-                 <div class="row">
-                     <table class="table table-responsive table-hover table-bordered table-condensed">
+                 <div class="row" style="max-height: 500px">
+                     <table id="tenantsdatatable"class="table table-responsive table-hover table-bordered table-condensed">
                          @if (empty($tenantbalances))
                             <h4 class="text-danger text-center" >No data available</h4>
                          @else
@@ -43,45 +43,49 @@ use App\Models\Tenantbalance;
                             $parameter5= Crypt::encrypt($parameter['unit_id']);
                             $parameter6= Crypt::encrypt($parameter['Month_Name']);
                             $parameter7= Crypt::encrypt($parameter['Year']);
-                            
+
                           ?>
                             <tr>
-                                <td><a href="{{ route('tenant.single',$parameter1 ) }}&&&{{ $parameter2 }}&&&{{$parameter3}})&&&{{$parameter4}})&&&{{$parameter5}}&&&{{$parameter6}}&&&({{$parameter7}}" class="btn btn-success">View details</a></td>
+                                <td><a href="{{ route('tenant.single',$parameter1 ) }}&&&{{ $parameter2 }}&&&{{$parameter3}})&&&{{$parameter4}})&&&{{$parameter5}}&&&{{$parameter6}}&&&({{$parameter7}}" class="btn btn-success" >View details</a></td>
                                 <td>{{$tenantbalance->TenantNames}}</td>
                                 <td>{{$tenantbalance->PropertyID}}</td>
                                 <td>{{$tenantbalance->unit_id}}</td>
                                 <td>{{$tenantbalance->Tel}}</td>
                              <td>{{$tenantbalance->OfficerInCharge}}</td>
                              <td>{{$tenantbalance->Balance}}</td>
-                            
-                         </tr>  
+
+                         </tr>
                          @php
                                 $total+=$tenantbalance->Balance
-                             @endphp  
+                             @endphp
                             @endforeach
                             <thead>
                                 <th></th><th></th><th></th><th></th><th></th><th>Total Sum</th><th>{{$total}}</th>
                              </thead>
-                          
-                            
+
+
                      </tbody>
                              @endif
-                             
-                             <?php       
+
+                             <?php
                              ?>
                    </table>
+                   {{-- @if (!empty($tenantbalances->links()))
+                   {!! $tenantbalances->links() !!}
+                   @endif --}}
+
+
                  </div>
              </div>
             </div>
         </div>
     </div>
-     
+
  </div>
- 
- 
-   
- 
- 
- 
- 
- 
+
+
+
+
+
+
+

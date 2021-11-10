@@ -1,0 +1,45 @@
+<?php 
+$arr = [];
+$arr[] = ['id' => 1, 'idno' => 111, 'date'=> '19/04/19', 'employee' => 'MAYER CU', 'timein' => '8:00:00 AM', 'timeout' => '6:54:00 PM', 'totalhours' => '10:54'];
+$arr[] = ['id' => 2, 'idno' => 111, 'date'=> '19/04/19', 'employee' => 'MAYER CU', 'timein' => '10:00:00 AM', 'timeout' => '6:00:00 PM', 'totalhours' => '8'];
+$arr[] = ['id' => 3, 'idno' => 111, 'date'=> '20/04/19', 'employee' => 'MIKE SMITH', 'timein' => '9:01:00 AM', 'timeout' => '6:54:00 PM', 'totalhours' => '9:53'];
+$arr[] = ['id' => 4, 'idno' => 111, 'date'=> '20/04/19', 'employee' => 'MIKE SMITH', 'timein' => '10:00:00 AM', 'timeout' => '6:55:00 PM', 'totalhours' => '8:55'];
+
+$arrDisplay = [];
+if (! empty($arr)) {
+ foreach ($arr as $employee) {
+  $arrDisplay[$employee['date']][] = $employee;
+ }
+}
+//echo '<pre>';print_r($arrDisplay);echo '</pre>';
+?>
+<table border="1" width="100%" cellspacing="0" cellpadding="0">
+    <?
+if (! empty($arrDisplay)) {
+ foreach ($arrDisplay as $date => $employees) {
+ ?>
+    <tr>
+        <td colspan="7" align="center"><?php echo $date;?></td>
+    </tr>
+    <?
+if (! empty($employees)) {
+ foreach ($employees as $employee) {
+?>
+    <tr>
+        <?
+if (! empty($employee)) {
+ foreach ($employee as $employeeData) {
+ ?>
+        <td><?php echo $employeeData;?></td>
+        <?
+}
+}
+?>
+    </tr>
+    <?
+ }
+}
+ }
+}
+?>
+</table>
