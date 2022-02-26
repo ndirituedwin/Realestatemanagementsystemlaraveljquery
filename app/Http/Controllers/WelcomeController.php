@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
-    public function getlogin(){
+    public function getlogin(Request $request){
+        $request->session()->flush();
         $dbname=session("dbname");
-        Client::configure($dbname);     
+        Client::configure($dbname);
         return view('welcome');
     }
 }

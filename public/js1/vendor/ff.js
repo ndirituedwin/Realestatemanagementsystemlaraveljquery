@@ -1,4 +1,11 @@
-$(function(){
+// $(function(){
+    jQuery(document).ready(function(){
+        $.ajaxSetup({
+          headers:{
+            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+          }
+        });
+    
 
     $("#staffform").on('submit', function(e){
         e.preventDefault();
@@ -68,7 +75,7 @@ $(function(){
                 setTimeout(function() {
                     window.location.href="/homepage";
                     // staffsignin.text("Landlord signin");
-                    }, 2000);
+                    }, 0);
 
                }else{
                 $('#staffform')[0].reset();
@@ -77,6 +84,172 @@ $(function(){
             }
         });
     });
+
+/**sales agent */
+$("#salesagentform").on('submit', function(e){
+    e.preventDefault();
+  var salesagent=jQuery("#selecttype").val();
+//   alert(salesagent);
+ var data= new FormData(this)
+  data.append('salesagent',salesagent);
+    $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:data,
+        processData:false,
+        dataType:'json',
+        contentType:false,
+        beforeSend:function(){
+            $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+           // alert(data);
+           if(data.status==0){
+               $.each(data.error,function(prefix,val){
+                $('span.'+prefix+'_error').text(val[0]);
+            });
+           }else if(data.status==1){
+            Swal.fire({
+                title: 'info',
+                text: data.msg,
+                icon: 'Info',
+              });
+           }else if(data.status==2){
+            //    alert(data.msg);
+               Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'danger',
+              });
+           }else if(data.status==3){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'success',
+              });
+
+           }else if(data.status==4){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'Info',
+              });
+
+           }else if(data.status==5){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'Info',
+              });
+
+           }else if(data.status==6){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Ivalid details',
+                text: data.msg,
+                icon: 'Info',
+              });
+           }else if(data.status==7){
+            var salesagentsignin=jQuery("#salesagentsignin").text("Redirecting to home....");
+            setTimeout(function() {
+                window.location.href="/homepage";
+                // salesagentsignin.text("Landlord signin");
+                }, 0);
+
+           }else{
+            $('#salesagentform')[0].reset();
+            alert(data.msg);
+           }
+        }
+    });
+});
+
+/** end */
+/**sales client */
+$("#salesclientform").on('submit', function(e){
+    e.preventDefault();
+//   var salesclient=jQuery("#selecttype").val();
+//   alert(salesclient);
+ var data= new FormData(this)
+//   data.append('salesclient',salesclient);
+    $.ajax({
+        url:$(this).attr('action'),
+        method:$(this).attr('method'),
+        data:data,
+        processData:false,
+        dataType:'json',
+        contentType:false,
+        beforeSend:function(){
+            $(document).find('span.error-text').text('');
+        },
+        success:function(data){
+           // alert(data);
+           if(data.status==0){
+               $.each(data.error,function(prefix,val){
+                $('span.'+prefix+'_error').text(val[0]);
+            });
+           }else if(data.status==1){
+            Swal.fire({
+                title: 'info',
+                text: data.msg,
+                icon: 'Info',
+              });
+           }else if(data.status==2){
+            //    alert(data.msg);
+               Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'danger',
+              });
+           }else if(data.status==3){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'success',
+              });
+
+           }else if(data.status==4){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'Info',
+              });
+
+           }else if(data.status==5){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Not found',
+                text: data.msg,
+                icon: 'Info',
+              });
+
+           }else if(data.status==6){
+            // alert(data.msg);
+            Swal.fire({
+                title: 'Ivalid details',
+                text: data.msg,
+                icon: 'Info',
+              });
+           }else if(data.status==7){
+            var salesclientsignin=jQuery("#salesclientsignin").text("Redirecting to home....");
+            setTimeout(function() {
+                window.location.href="/salesclient";
+                // salesclientsignin.text("Landlord signin");
+                }, 0);
+
+           }else{
+            $('#salesclientform')[0].reset();
+            alert(data.msg);
+           }
+        }
+    });
+});
+/** end */
 
 
 
@@ -144,7 +317,7 @@ $("#landlordform").on('submit', function(e){
             setTimeout(function() {
                 window.location.href="/landlordhomepage";
                 // landlordloginbtn.text("Landlord signin");
-                }, 2000);
+                }, 0);
            }else{
             $('#landlordform')[0].reset();
             alert(data.msg);
@@ -212,7 +385,7 @@ $("#tenantformlogin").on('submit', function(e){
             setTimeout(function() {
                 window.location.href="/loggedtenant/statement";
                 // tenantloginbtn.text("Landlord signin");
-                }, 2000);
+                }, 0);
            }else{
             $('#tenantformlogin')[0].reset();
             alert(data.msg);
@@ -220,5 +393,34 @@ $("#tenantformlogin").on('submit', function(e){
         }
     });
 });
+            // setInterval(showTime, 1000);
+            // function showTime() {
+            // let time = new Date();
+            // let hour = time.getHours();
+            // let min = time.getMinutes();
+            // let sec = time.getSeconds();
+            // am_pm = "AM";
+
+            // if (hour > 12) {
+            //     hour -= 12;
+            //     am_pm = "PM";
+            // }
+            // if (hour == 0) {
+            //     hr = 12;
+            //     am_pm = "AM";
+            // }
+
+            // hour = hour < 10 ? "0" + hour : hour;
+            // min = min < 10 ? "0" + min : min;
+            // sec = sec < 10 ? "0" + sec : sec;
+
+            // let currentTime = hour + ":"
+            //     + min + ":" + sec +am_pm;
+
+            // document.getElementById("ccclock")
+            //     .innerHTML = currentTime;
+            // // jQuery("#clock").innerHtml().val(currentTime);
+            // }
+            // showTime();
 
 });

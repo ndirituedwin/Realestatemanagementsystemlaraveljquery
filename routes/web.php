@@ -14,6 +14,8 @@ use App\Http\Controllers\AjaxLoginController;
 use App\Http\Controllers\PaginationController;
 use App\Models\Tenantbalance;
 use App\Http\Controllers\LandlordController;
+use App\Http\Controllers\SalesAgentController;
+use App\Http\Controllers\SalesClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +45,11 @@ Route::group(['middleware'=>['Guest']],function(){
      Route::post('/verifypassword',[AuthController::class,'verifypassword']);
 
      //ajaxlogin
+
      Route::post('/signinstaff',[AjaxLoginController::class,'loginstafff'])->name("stafflogin");
+     Route::post('/signinsalesagent',[AjaxLoginController::class,'salesagentlogin'])->name("salesagentlogin");
+     Route::post('/signinsalesclient',[AjaxLoginController::class,'salesclientlogin'])->name("salesclientlogin");
+
      Route::post('/signinlandlord',[AjaxLoginController::class,'loginlandlord'])->name("landordlogin");
      Route::post('/signintenant',[AjaxLoginController::class,'logintenant'])->name("tenantloginnnn");
 
@@ -53,6 +59,7 @@ Route::group(['middleware'=>['Guest']],function(){
 Route::group(['middleware'=>['Checkuser']],function(){
     /**staff */
     Route::get('/homepage',[AuthController::class,'getwelcomepage'])->name('home.beforerecords');
+    // Route::get('/salesclient',[SalesClientController::class,'welcome'])->name('saleclient.welcome');
    //homesection
    Route::get('/propwigs_pause',[AuthController::class,'home'])->name('homepage');
    Route::get('/vacantunittss',[AuthController::class,'homepage'])->name('vacantunits');
@@ -73,6 +80,24 @@ Route::group(['middleware'=>['Checkuser']],function(){
     Route::post('/tenant/generatestatement',[Tenantstatementcontroller::class,'generatetenantstatement'])->name('tenant.generatestatement');
     Route::get('/tenant/viewmakestatement',[Tenantstatementcontroller::class,'makepdfforenant'])->name('tenant.makestatement');
 /**end of staff */
+/**sales agent */
+Route::get('/salesagentclientstatements',[SalesAgentController::class,'clientstatement'])->name('client.statements');
+Route::get('/salesagent/projectstatus',[SalesAgentController::class,'projectstatus'])->name('client.projectstatus');
+Route::post('/sales_agent/preview_project_status',[SalesAgentController::class,'viewprojectstatus']);
+Route::post('/sales_agent/view_client_statements',[SalesAgentController::class,'loadclientstatements']);
+// Route::GET('/sales_agent/pdf',[SalesAgentController::class,'salesagentpdf'])->name('salesagent.pdf');
+Route::get('/sales_agent/pdf',[SalesAgentController::class,'salesagentpdf'])->name('salesagent.pdf');
+
+
+/**end of sales agent */
+/** sales client*/
+ Route::get('/salesclient',[SalesClientController::class,'welcome'])->name('saleclient.welcome');
+ Route::get('/sales/client/pdf',[SalesClientController::class,'salesclientpdf'])->name('salesaclientpdf');
+ Route::get('/sales/client/vacant/pdf',[SalesClientController::class,'salesclientvacantunits'])->name('salesclient.vacantunits');
+
+/**nde */
+//
+
 /** LOGGED IN TENANT SECTION*/
 Route::get('/loggedtenant/statement',[AuthController::class,'loggedtenantstatement'])->name('loggedtenantstatement');
 Route::post('/loggedtenant/previewstatement',[AuthController::class,'loggedtenantpreviewstatement']);
@@ -100,27 +125,5 @@ Route::get('/get/siglevacantunit/{id}',[VacantunitController::class,'singlevacan
 Route::get('/pagination', [PaginationController::class,'index']);
 Route::get('pagination/fetch_data', [PaginationController::class,'fetch_data']);
 
-// Route::post('/logged/tenant/generatestatement',[AuthController::class,'maketenantstatement'])->name('loggedtenant.makestatement');
-// Route::post('/loggedtenant/generatestatement',[AuthController::class,'loggedtenantstatement']);
-// Route::get('/tenant/generate_pdf',[Tenantstatementcontroller::class,'generate_pdf'])->name('tenant.generate_pdf');
-
-
-//landlord
 });
 Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-
-/*
-Route::get('/homebforerecords',[AuthController::class,'getwelcomepage'])->name('home.beforerecords');
-Route::get('/homepage',[AuthController::class,'homepage'])->name('homepage');
-Route::get('/singletenantbalance/{name}',[TenantbalanceController::class,'getsingletenantbalance'])->name('tenant.single');
-Route::post('/get/properties',[VacantunitController::class,'getvacantunits']);
-Route::get('/get/siglevacantunit/{id}',[VacantunitController::class,'singlevacantunit'])->name('single.vacantunit');
-Route::get('/tenantbalances',[TenantbalanceController::class,'tenantbalances'])->name('tenant.balances');
-Route::post('/get/tenantbalances',[TenantbalanceController::class,'gettenantbalances']);
-Route::post('/get/fieldofficer',[TenantbalanceController::class,'gettenatbalancesbyfieldofficer']);
-Route::post('/get/fieldofficer',[TenantbalanceController::class,'gettenatbalancesbyfieldofficer']);
-Route::post('/get/payableselect',[TenantbalanceController::class,'gettenatbalancesbypayables']);
-Route::post('/get/yearselect',[TenantbalanceController::class,'gettenatbalancesbyyear']);
-Route::post('/get/categories',[categorycontroller::class,'getvacantunitsbycategor']);
-*/
-//Route::get('/vac',[VacantunitController::class,'vacant']);

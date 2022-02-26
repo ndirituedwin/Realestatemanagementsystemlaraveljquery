@@ -16,7 +16,7 @@
 
     </head>
     <body>
-        @include('partials.navbar')
+        @include('partials.salesclientnavbar')
         <div  class="container">
             @yield('content')
 

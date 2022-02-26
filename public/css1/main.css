@@ -1,95 +1,94 @@
-*{
-   margin: 0px;
-   padding: 0px;
+* {
+    margin: 0px;
+    padding: 0px;
+    /* color: white; */
 }
-body{
-   background-color: rgb(2, 2, 2);
-   /** background:url(real.png);**/
-   background-size: cover;
-   background-attachment: fixed;
-   font-family: 'Times New Roman', Times, serif;
+body {
+    background-color: rgb(2, 2, 2);
+    /** background:url(real.png);**/
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: "Times New Roman", Times, serif;
 }
-h1{
-   font-size: 15px;
-   color:green;
-   font-family: Arial;
+h1 {
+    font-size: 15px;
+    color: green;
+    font-family: Arial;
 }
-p{
-   font-size: 15px;
-   font-family: Arial;
-   color: rgb(5, 5, 5);
+p {
+    font-size: 15px;
+    font-family: Arial;
+    color: rgb(5, 5, 5);
 }
-.col-md-9{
-   margin-top: 70px;
-   box-shadow: -5px -5px 5px  rgb(3, 3, 3);
-   border-radius: 5px;
+.col-md-9 {
+    margin-top: 70px;
+    box-shadow: -5px -5px 5px rgb(3, 3, 3);
+    border-radius: 5px;
 }
-label{
-   color:rgb(65, 64, 64);
-   margin-left: 60px;
-   font-family: Arial;
-   font-size: 15px;
+label {
+    color: rgb(65, 64, 64);
+    margin-left: 60px;
+    font-family: Arial;
+    font-size: 15px;
+}
+.form-control {
+    background: transparent;
+    border-radius: 0;
+    border: 0px;
+    border-bottom: 1px solid white;
+    font-size: 15px;
+    margin-top: 5px;
+    font-family: Arial;
+}
+.inputfield {
+    font-family: Arial;
+    font-size: 15px;
+    color: white;
+    border-radius:10px;
+    background-color: black;
+}
+.btn-success {
+    margin-left: -100px;
+    font-family: Arial;
+}
+.login:hover {
+    background: rgb(42, 73, 12);
+    color: white;
+    font-family: Arial;
 
-
+    box-shadow: -1px 1px 60px 10px rgb(194, 176, 176);
 }
-.form-control{
-   background: transparent;
-   border-radius: 0;
-   border: 0px;
-   border-bottom: 1px solid white;
-   font-size: 15px;
-   margin-top: 5px;
-   font-family: Arial;
-
-}
-input{
-   border-radius: 5px;
-   font-family: Arial;
-   font-size: 15px;
-
-
-}
-.btn-success{
- margin-left: -100px;
- font-family: Arial;
-
-}
-.login:hover{
-   background: rgb(42, 73, 12);
-   color: white;
-   font-family: Arial;
-
-   box-shadow: -1px 1px 60px  10px rgb(194, 176, 176);
-}
-#span{
-   margin-left: 30px;
-}
-#selecttype{
-    border: 1px solid rgb(94, 92, 92);
-    width: 300px;
+#span {
     margin-left: 30px;
-    /* margin-right: 10px;  */
+}
+#selecttype {
+    border: 1px solid rgb(94, 92, 92);
+    /* width: 300px; */
+    /* margin-left: 30px; */
     border-radius: 10px;
     font-family: Arial;
-    font-size:15px;
-
+    font-size: 15px;
 }
-.propwingslogo{
+.propwingslogo {
     background: url(matatu.jpg);
     width: auto;
     height: auto;
 }
-.loginpagee{
-    /* margin:50px auto; */
-    /* opacity:.7; */
-    /* background-color: #000000; */
-    padding:10px;
-    /* width:85%; */
-    margin-left:auto;
-    margin-right:auto;
-    max-width:  400px;
-    height:auto;
-   background-color: white;
-   
+.loginpage {
+    margin:50px auto;
+    opacity:.7;
+    background-color: #000000;
+    padding: 10px;
+    width:85%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    height: auto;
+    background-color: white;
 }
 
+.image{
+   max-width: 300px;
+
+    /* width: fit-content; */
+}

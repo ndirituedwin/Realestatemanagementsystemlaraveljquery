@@ -70,6 +70,133 @@ class AjaxLoginController extends Controller
              }
         }
     }
+    //sales agent
+    protected function salesagentlogin(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'salesagentusername'=>'required|alpha_dash|max:50',
+            'salesagentpassword'=>'required|numeric|min:7',
+            'salesagentorganization'=>'required|string'
+        ]);
+        if(!$validator->passes()){
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }else{
+            Session::put('salesagent',$request['salesagent']);
+            $salesagentorganization=$request->salesagentorganization;
+            try {
+                $database=Client::where('client',$salesagentorganization)->first()->toArray();
+                $dbnamedependingonclientname=$database['db_name'];
+                 session(["dbname"=>$dbnamedependingonclientname]);
+            } catch (\Throwable $th) {
+                return response()->json(['status'=>2, 'msg'=>"The organization $salesagentorganization could not be found"]);
+            }
+
+             try {
+                 Client::configure($dbnamedependingonclientname);
+
+                 try {
+                    $salesagentusername=$request['salesagentusername'];
+                    $salesagentpassword=$request['salesagentpassword'];
+                    // $getuser=DB::table('Users')->where('UserName',$salesagentusername)
+                    // ->join('EmployeesDetails','Users.EmployeeNo','=','EmployeesDetails.EmployeeNo')->first();
+                    $getuser=DB::table('PR_Client_Register')->where('ClientNo',$salesagentusername)->first();
+
+                   if(!$getuser){
+                            return response()->json(['status'=>6, 'msg'=>"User Not found"]);
+
+                        }else{
+                         try {
+                             $getpassword=$getuser->IdNo;
+                                if($getpassword!=$salesagentpassword){
+                                return response()->json(['status'=>6, 'msg'=>"Invalid login details"]);
+                             }else{
+                                $request->session()->put('username',$salesagentusername);
+                                $request->session()->put('salesagentname',$getuser->ClientName);
+                                $request->session()->put('salesagentidno',$getpassword);
+                                return response()->json(['status'=>7, 'msg'=>"we are now taking you to the homepage"]);
+                             }
+                         } catch (\Throwable $th) {
+                            return response()->json(['status'=>6, 'msg'=>"Invalid login details".$th->getMessage()]);
+                         }
+                        }
+
+
+                 } catch (\Throwable $th) {
+                    return response()->json(['status'=>4, 'msg'=>"user not found".$th->getMessage()]);
+                 }
+             } catch (\Throwable $th) {
+                return response()->json(['status'=>3, 'msg'=>"database ". $this->defaultdbconnection." does not exist "]);
+             }
+        }
+
+
+    }
+    //salesclient
+      protected function salesclientlogin(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'salesclientno'=>'required|string',
+            'salesclientpassword'=>'required|numeric|min:7',
+            'salesclientorganization'=>'required|string'
+        ]);
+        if(!$validator->passes()){
+            return response()->json(['status'=>0, 'error'=>$validator->errors()->toArray()]);
+        }else{
+            Session::put('salesclient',$request['salesclient']);
+            $salesclientorganization=$request->salesclientorganization;
+            try {
+                $database=Client::where('client',$salesclientorganization)->first()->toArray();
+                $dbnamedependingonclientname=$database['db_name'];
+                 session(["dbname"=>$dbnamedependingonclientname]);
+            } catch (\Throwable $th) {
+                return response()->json(['status'=>2, 'msg'=>"The organization $salesclientorganization could not be found"]);
+            }
+
+             try {
+                 Client::configure($dbnamedependingonclientname);
+
+                 try {
+                    $salesclientno=$request['salesclientno'];
+                    $salesclientpassword=$request['salesclientpassword'];
+                    // $getuser=DB::table('Users')->where('UserName',$salesclientno)
+                    // ->join('EmployeesDetails','Users.EmployeeNo','=','EmployeesDetails.EmployeeNo')->first();
+                    //     if(!$getuser){
+                    //         return response()->json(['status'=>6, 'msg'=>"User Not found"]);
+                    //     }else{
+                    $getuser=DB::table('PR_Client_Register')->where('ClientNo',$salesclientno)->first();
+                    if(!$getuser){
+                         return response()->json(['status'=>6, 'msg'=>"User Not found"]);
+
+                    }else{
+                         try {
+                             $getpassword=$getuser->IdNo;
+                                if($getpassword!=$salesclientpassword){
+                                return response()->json(['status'=>6, 'msg'=>"Invalid login details"]);
+                             }else{
+                                $request->session()->put('username',$salesclientno);
+                                $request->session()->put('companynanmee',$dbnamedependingonclientname);
+                                $request->session()->put('salesclientrecid',$getuser->Recid);
+                                $request->session()->put('salesclientname',$getuser->ClientName);
+                                $request->session()->put('salesclientidno',$getpassword);
+
+                                return response()->json(['status'=>7, 'msg'=>"we are now taking you to the homepage"]);
+                             }
+                         } catch (\Throwable $th) {
+                            return response()->json(['status'=>6, 'msg'=>"Invalid login details".$th->getMessage()]);
+                         }
+                        }
+
+
+                 } catch (\Throwable $th) {
+                    return response()->json(['status'=>4, 'msg'=>"user not found".$th->getMessage()]);
+                 }
+             } catch (\Throwable $th) {
+                return response()->json(['status'=>3, 'msg'=>"database ". $this->defaultdbconnection." does not exist "]);
+             }
+        }
+
+
+    }
     //landlord login
     public function loginlandlord(Request $request){
         Session::put('page', "llblock");

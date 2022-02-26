@@ -71,7 +71,7 @@ class AuthController extends Controller
                     if($request['staffpassword']!=$getpassword){
                   return back()->withdanger("Invalid login details");
                  }
-                 dd($getuser);
+                //  dd($getuser);
                    $request->session()->put('username',$request['staffusername']);
                 return redirect('/homepage');
              } catch (\Throwable $th) {

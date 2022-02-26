@@ -32,15 +32,13 @@
 
             <script>
                jQuery(document).ready(function(){
+                   jQuery("#myprojectstatuses").DataTable();
             jQuery("#mydatatable").DataTable();
             jQuery("#tenantsdatatable").DataTable();
+            jQuery("#myclientstatements").DataTable();
+
                 });
-            //    $(function () {
-            //         $("#mydatatable").DataTable();
-            //         $("#tenantsdatatable").DataTable();
-
-
-            //     });
+           
               </script>
         </body>
 </html>
